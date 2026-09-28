@@ -1,0 +1,87 @@
+# Concursa IA
+
+Sistema de IA para geração e avaliação de simulados para concursos públicos.
+
+## Tecnologias
+
+O projeto utiliza:
+
+- Python 3.12+
+- FastAPI
+- Uvicorn
+- uv para gerenciamento de dependências e ambiente Python
+- Docker para containerização da aplicação
+
+## Estrutura básica
+
+```text
+concursa-ia/
+├── app/
+│   ├── __init__.py
+│   └── main.py
+├── Dockerfile
+├── pyproject.toml
+├── uv.lock
+└── README.md
+```
+
+## Ambiente local com uv
+
+O projeto utiliza o `uv` para gerenciamento do ambiente Python e das dependências.
+
+### Instalar as dependências
+
+```bash
+uv sync
+```
+
+### Executar a aplicação localmente
+
+```bash
+uv run uvicorn app.main:app --reload
+```
+
+A API ficará disponível em:
+
+```text
+http://localhost:8000
+```
+
+A documentação Swagger pode ser acessada em:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+# Docker
+
+A aplicação também pode ser executada dentro de um container Docker.
+
+## Dockerfile
+
+```dockerfile
+FROM python:3.14-slim
+
+WORKDIR /app
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --frozen --no-dev
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+### O que acontece durante o build
+
+O Docker:
+
+1. utiliza uma imagem com Python;
+2. define `/

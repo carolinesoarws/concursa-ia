@@ -1,0 +1,19 @@
+[project]
+name = "concursa-ia"
+version = "0.1.0"
+description = "Agente de IA para simulados"
+readme = "README.md"
+
+authors = [
+    { name = "Caroline Soares", email = "karol.siva@hotmail.com" }
+]
+
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi>=0.141.1",
+    "uvicorn>=0.54.0",
+]
+
+[tool.uv]
+package = false
