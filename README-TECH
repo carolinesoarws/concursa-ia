@@ -2,86 +2,93 @@
 
 Sistema de IA para geração e avaliação de simulados para concursos públicos.
 
-## Tecnologias
-
-O projeto utiliza:
+## Requisitos
 
 - Python 3.12+
-- FastAPI
-- Uvicorn
-- uv para gerenciamento de dependências e ambiente Python
-- Docker para containerização da aplicação
+- uv
+- Docker
 
-## Estrutura básica
+## Configuração local
 
-```text
-concursa-ia/
-├── app/
-│   ├── __init__.py
-│   └── main.py
-├── Dockerfile
-├── pyproject.toml
-├── uv.lock
-└── README.md
-```
-
-## Ambiente local com uv
-
-O projeto utiliza o `uv` para gerenciamento do ambiente Python e das dependências.
-
-### Instalar as dependências
+Instale as dependências:
 
 ```bash
 uv sync
 ```
 
-### Executar a aplicação localmente
+Execute a aplicação:
 
 ```bash
 uv run uvicorn app.main:app --reload
 ```
 
-A API ficará disponível em:
+A aplicação estará disponível em:
 
 ```text
 http://localhost:8000
 ```
 
-A documentação Swagger pode ser acessada em:
+Swagger:
 
 ```text
 http://localhost:8000/docs
 ```
 
----
+## Docker
 
-# Docker
+### Build da imagem
 
-A aplicação também pode ser executada dentro de um container Docker.
-
-## Dockerfile
-
-```dockerfile
-FROM python:3.14-slim
-
-WORKDIR /app
-
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
-COPY pyproject.toml uv.lock ./
-
-RUN uv sync --frozen --no-dev
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+```bash
+docker build -t concursa-ia .
 ```
 
-### O que acontece durante o build
+### Executar o container
 
-O Docker:
+```bash
+docker run --name concursa-ia-container -p 8000:8000 concursa-ia
+```
 
-1. utiliza uma imagem com Python;
-2. define `/
+A aplicação estará disponível em:
+
+```text
+http://localhost:8000
+```
+
+Swagger:
+
+```text
+http://localhost:8000/docs
+```
+
+### Parar o container
+
+```bash
+docker stop concursa-ia-container
+```
+
+### Executar novamente
+
+```bash
+docker start concursa-ia-container
+```
+
+## Dependências
+
+As dependências são gerenciadas pelo `uv` através dos arquivos:
+
+```text
+pyproject.toml
+uv.lock
+```
+
+Para adicionar uma nova dependência:
+
+```bash
+uv add nome-da-biblioteca
+```
+
+Para atualizar o ambiente:
+
+```bash
+uv sync
+```
